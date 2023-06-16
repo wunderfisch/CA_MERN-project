@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import { request, response } from "express";
 import recipesModel from "../models/recipesModel.js";
 
@@ -6,7 +7,11 @@ const getAllRecipes = async (request, response) => {
 
   //tells mongoose to look at the model, go to database (recipesapp) and look at collection (recipes), find all documents and show in clg
   // .find is an async function from mongoose, they defined it
-  const allRecipes = await recipesModel.find({});
+  const allRecipes = await recipesModel.find({}).populate({ path: "wellwith" });
+  // populate: when finding all recipes, say which field of the recipes model to populate = path wellwith
+  // PATH is the field in the model of type mongoose.Schema.Types.ObjectId
+  // if we don't want to see the full object inside another but only few fiels, do as follows:
+  // const allRecipes = await recipesModel.find({}).populate({ path: "wellwith", select:["name", "likes"] });
 
   // now define what to send back to frontend
   response.status(200).json({
@@ -35,10 +40,12 @@ const getRecipesByCategory = async (request, response) => {
   // if there is something in the field request.query.likes execute the following
   if (likes) {
     try {
-      const recipesWithCategoryAndLikes = await recipesModel.find({
-        category: category,
-        likes: { $gte: likes },
-      });
+      const recipesWithCategoryAndLikes = await recipesModel
+        .find({
+          category: category,
+          likes: { $gte: likes },
+        })
+        .populate({ path: "wellwith" });
       if (recipesWithCategoryAndLikes.length === 0) {
         response.status(200).json({
           message: "no recipes with this number of likes in this category",

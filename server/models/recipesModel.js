@@ -19,7 +19,7 @@ const recipeSchema = new mongoose.Schema({
     unique: true,
   },
   ingredients: {
-    type: Object,
+    type: Array,
     required: true,
     unique: true,
   },
@@ -38,6 +38,9 @@ const recipeSchema = new mongoose.Schema({
     required: false,
     unique: false,
   },
+  // populate. documentation from mongoose requires. ref is the name of the collection which fields we want to display inside another
+  // go to recipeContoller.js and add .populate({path: "wellwith"})
+  wellwith: [{ type: mongoose.Schema.Types.ObjectId, ref: "drink" }],
 });
 
 // to which database this model should be applied? put the collection name in singular! mongoose uses dictionary and knows that it belongs to the recipeS collection

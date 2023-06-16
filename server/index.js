@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import testRouter from "./routes/testRouter.js";
 import recipesRouter from "./routes/recipesRouter.js";
+import drinksRouter from "./routes/drinksRouter.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -42,6 +43,7 @@ const loadRoutes = () => {
   app.use("/test", testRouter);
   // create different base urls to make the url look properly
   app.use("/api/recipes", recipesRouter);
+  app.use("/api/drinks", drinksRouter);
 };
 
 // rewrite since parts of the routing put to testRouter.js// /test is base url
