@@ -3,10 +3,13 @@ import cors from "cors";
 import testRouter from "./routes/testRouter.js";
 import recipesRouter from "./routes/recipesRouter.js";
 import drinksRouter from "./routes/drinksRouter.js";
+import userRouter from "./routes/userRouter.js";
+// add .js manually
 import * as dotenv from "dotenv";
 dotenv.config();
 
 import mongoose, { connect } from "mongoose";
+import multerUpload from "./middleware/multer.js";
 
 const app = express();
 
@@ -44,6 +47,7 @@ const loadRoutes = () => {
   // create different base urls to make the url look properly
   app.use("/api/recipes", recipesRouter);
   app.use("/api/drinks", drinksRouter);
+  app.use("/api/users", userRouter);
 };
 
 // rewrite since parts of the routing put to testRouter.js// /test is base url
