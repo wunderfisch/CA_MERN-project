@@ -2,43 +2,26 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import Register from "./views/Register";
 
 function App() {
-  const [count, setCount] = useState(0);
+  //   const [count, setCount] = useState(0);
 
-  // fetching data
-  const getRecipes = async (params: type) => {
-    const response = await fetch("http://localhost:5001/api/recipes/all");
-    const data = await response.json();
-    console.log("data :>> ", data);
-  };
+  //   fetching data
+  //   const getRecipes = async (params: type) => {
+  //     const response = await fetch("http://localhost:5001/api/recipes/all");
+  //     const data = await response.json();
+  //     console.log("data :>> ", data);
+  //   };
 
-  useEffect(() => {
-    getRecipes();
-  }, []);
+  //   useEffect(() => {
+  //     getRecipes();
+  //   }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <h2>Recipes App</h2>
+      <Register />
     </>
   );
 }

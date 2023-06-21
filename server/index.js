@@ -10,6 +10,7 @@ dotenv.config();
 
 import mongoose, { connect } from "mongoose";
 import multerUpload from "./middleware/multer.js";
+import cloudinaryConfig from "./config/cloudinary.js";
 
 const app = express();
 
@@ -24,6 +25,7 @@ const addMiddelwares = () => {
     })
   );
   app.use(cors());
+  cloudinaryConfig();
 };
 
 const startServer = () => {
