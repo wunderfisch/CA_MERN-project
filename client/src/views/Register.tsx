@@ -18,7 +18,7 @@ const Register = (props: Props) => {
   // initial state has to be defined
   const [newUser, setNewUser] = useState<User>({
     userName: "",
-    emgail: "",
+    email: "",
     password: "",
     avatar: "",
   });
@@ -32,6 +32,15 @@ const Register = (props: Props) => {
     const file = e.target.files?.[0] || "";
     // setselectedFile does not accept e.target.files?.[0] directly because it does not accept "", so const file is needed
     setSelectedFile(file);
+  };
+
+  // handler for updating inputs of registration
+  // this functions handles all inputs with the same function instead one function per input
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // with the following notation the console shows for all inputs with the handleInputChange which one is acting
+    // console.log([e.target.name], e.target.value);
+    // use spread operator ... because avatar pic is already there
+    setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
 
   // to prevent that the page always refreshes when button is clicked (without sending) the event has to be passed into the funtion and used like this: e.preventDefault
@@ -69,10 +78,75 @@ const Register = (props: Props) => {
     }
   };
 
+  // function for registration
+  const register = async () => {
+    console.log("newUser :>> ", newUser);
+
+    // take code from postman snipppet in my "register user request"
+    // change all var to const
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("username", newUser.userName);
+    urlencoded.append("email", newUser.email);
+    urlencoded.append("password", newUser.password);
+    // condition because some might not want to upload a picture
+    urlencoded.append(
+      "avatar",
+      newUser.avatar ? newUser.avatar : "url of a default picture"
+    );
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: urlencoded,
+      // redirect: "follow",
+    };
+
+    // change then-block to try-catch-block
+    try {
+      const response = await fetch(
+        "http://localhost:5001/api/users/register",
+        requestOptions
+      );
+      const result = await response.json();
+      console.log("result :>> ", result);
+    } catch (error) {
+      console.log("error :>> ", error);
+    }
+  };
+
   return (
     <div>
       <h2>Register</h2>
       <div>
+        {/* div for inputing the registration information to be send to userController */}
+        <div className="registerinputs">
+          <label htmlFor="userName">userName</label>
+          <input
+            type="text"
+            name="userName"
+            id="userName"
+            onChange={handleInputChange}
+          />
+          <label htmlFor="email">email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            onChange={handleInputChange}
+          />
+          <label htmlFor="password">password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            onChange={handleInputChange}
+          />
+          <button onClick={register}>register</button>
+        </div>
+
         <form onSubmit={submitPicture}>
           <input
             type="file"
