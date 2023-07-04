@@ -43,7 +43,7 @@ const Register = (props: Props) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
 
-  // to prevent that the page always refreshes when button is clicked (without sending) the event has to be passed into the funtion and used like this: e.preventDefault
+  // to prevent that the page always refreshes when button is clicked (without sending) the event has to be passed into the function and used like this: e.preventDefault
   // the event as above has to match with typescript
   const submitPicture = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -94,7 +94,9 @@ const Register = (props: Props) => {
     // condition because some might not want to upload a picture
     urlencoded.append(
       "avatar",
-      newUser.avatar ? newUser.avatar : "url of a default picture"
+      newUser.avatar
+        ? newUser.avatar
+        : "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Krummgurke_mit_Sinn.jpg/270px-Krummgurke_mit_Sinn.jpg"
     );
 
     const requestOptions = {

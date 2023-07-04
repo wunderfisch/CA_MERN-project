@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import userModel from "../models/usersModel.js";
-import { hashedPassword } from "../utils/encryptPassword.js";
+import { hashedPassword, verifyPassword } from "../utils/encryptPassword.js";
 // remember to add .js
 
 const imageUpload = async (req, res) => {
@@ -33,6 +33,9 @@ const register = async (req, res) => {
   // info will be in field body of the req
   console.log("req.body :>> ", req.body);
   // const {email} = req.body // destructuring is also possible to be used in the variable existingUser
+
+  // checking password and email can be made here. https://express-validator.github.io/docs/
+
   // first check if user is already registered in database
   try {
     // find our user with method in mongoose docu --> queries --> findOne - because user email needs to be unique only One, also One just finds the first instance of a given word
@@ -93,4 +96,45 @@ const register = async (req, res) => {
   } catch (error) {}
 };
 
-export { imageUpload, register };
+// login function
+const login = async (res, req) => {
+  // first check if the user exists
+  // from the request we need email and password
+  const { email, password } = req.body;
+
+  try {
+    // find user where email is the same as in DB (email was classified as unique)
+    const existingUser = await userModel.findOne({ email: email });
+    console.log("existingUser :>> ", existingUser);
+    // if no one exists with that emailadresse send message to display
+    if (!existingUser) {
+      res.status(404).json({
+        message:
+          "We have no user registered on this website with this email addresse yet.",
+      });
+    }
+    // else the user exists
+    else {
+      // if user exists, check that the password is correct with bcrypt 12:00ff
+      try {
+        const checkedPassword = await verifyPassword(
+          password,
+          existingUser.password
+        );
+        // now PW can be true or false
+        if (!checkedPassword) {
+          // not matching
+          res.status(401).json({
+            error: "This password is not correct.",
+          });
+        } else {
+          // PW matching = true
+          // if credentials match, generate Json Web Token
+          console.log("password is correct");
+        }
+      } catch (error) {}
+    }
+  } catch (error) {}
+};
+
+export { imageUpload, register, login };
