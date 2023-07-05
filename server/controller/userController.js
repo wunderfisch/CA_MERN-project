@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import userModel from "../models/usersModel.js";
 import { hashedPassword, verifyPassword } from "../utils/encryptPassword.js";
+import { issueToken } from "../utils/jwtToken.js";
 // remember to add .js
 
 const imageUpload = async (req, res) => {
@@ -97,9 +98,10 @@ const register = async (req, res) => {
 };
 
 // login function
-const login = async (res, req) => {
+const login = async (req, res) => {
   // first check if the user exists
   // from the request we need email and password
+  console.log("req.body :>> ", req.body);
   const { email, password } = req.body;
 
   try {
@@ -116,6 +118,7 @@ const login = async (res, req) => {
     // else the user exists
     else {
       // if user exists, check that the password is correct with bcrypt 12:00ff
+      // verifyPassword is imported from encryptPassword.js and returns a boolean
       try {
         const checkedPassword = await verifyPassword(
           password,
@@ -129,8 +132,32 @@ const login = async (res, req) => {
           });
         } else {
           // PW matching = true
-          // if credentials match, generate Json Web Token
+          // if credentials match, generate Json Web Token 22:00
           console.log("password is correct");
+          // for creating the token info of the user is needed. many things can be used. Here MongoDB _id of the user
+          // it is possible to extract some user info from the token
+          // import issueToken, function in jwtToken.js
+          const token = issueToken(existingUser._id);
+          console.log("token :>> ", token);
+
+          // if token is correct
+          if (token) {
+            res.status(200).json({
+              message: "login successful",
+              user: {
+                userName: existingUser.userName,
+                email: existingUser.email,
+                avatar: existingUser.avatar,
+              },
+              // also send back the token
+              token,
+            });
+          } else {
+            console.log("problem generating the token");
+            res.status(500).json({
+              message: "something went wrong during login",
+            });
+          }
         }
       } catch (error) {}
     }
