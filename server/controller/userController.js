@@ -99,6 +99,7 @@ const register = async (req, res) => {
 
 // login function
 const login = async (req, res) => {
+  console.log("login");
   // first check if the user exists
   // from the request we need email and password
   console.log("req.body :>> ", req.body);

@@ -4,7 +4,7 @@ dotenv.config();
 
 // function
 const issueToken = (userId) => {
-  //   console.log("userId :>> ", userId);
+  console.log("userId :>> ", userId);
   const options = {
     expiresIn: "1d",
     issuer: "martha",

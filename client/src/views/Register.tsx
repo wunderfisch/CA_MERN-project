@@ -124,7 +124,7 @@ const Register = (props: Props) => {
       <h2>Register</h2>
       <div>
         {/* div for inputing the registration information to be send to userController */}
-        <div className="registerinputs">
+        <div className="inputfields">
           <label htmlFor="userName">userName</label>
           <input
             type="text"
@@ -146,7 +146,6 @@ const Register = (props: Props) => {
             id="password"
             onChange={handleInputChange}
           />
-          <button onClick={register}>register</button>
         </div>
 
         <form onSubmit={submitPicture}>
@@ -171,6 +170,10 @@ const Register = (props: Props) => {
           />
         </div>
       )}
+      <div>
+        {" "}
+        <button onClick={register}>register</button>
+      </div>
     </div>
   );
 };

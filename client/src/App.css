@@ -22,7 +22,7 @@
   width: 150px;
 }
 
-.registerinputs {
+.inputfields {
   display: flex;
   flex-direction: column;
   align-items: center;
