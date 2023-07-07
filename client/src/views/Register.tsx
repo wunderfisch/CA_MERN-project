@@ -1,12 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 
 type Props = {};
-interface User {
-  userName: string;
-  email: string;
-  password: string;
-  avatar: string;
-}
+// interface User moved to index.d.ts
 
 const Register = (props: Props) => {
   // selected file is what the user uploads
@@ -16,7 +11,7 @@ const Register = (props: Props) => {
   // variable that stores the values of the new user
   // newUser is of type User defined in the interface above
   // initial state has to be defined
-  const [newUser, setNewUser] = useState<User>({
+  const [newUser, setNewUser] = useState<RegisterCredentials>({
     userName: "",
     email: "",
     password: "",

@@ -112,7 +112,7 @@ const login = async (req, res) => {
     // if no one exists with that emailadresse send message to display
     if (!existingUser) {
       res.status(404).json({
-        message:
+        error:
           "We have no user registered on this website with this email addresse yet.",
       });
     }
@@ -165,4 +165,8 @@ const login = async (req, res) => {
   } catch (error) {}
 };
 
-export { imageUpload, register, login };
+const getProfile = async (req, res) => {
+  console.log("is getProfile working?");
+};
+
+export { imageUpload, register, login, getProfile };

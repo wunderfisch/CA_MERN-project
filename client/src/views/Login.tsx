@@ -1,11 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 type Props = {};
-// type for loginCredentials
-interface LoginCredentials {
-  email: string;
-  password: string;
-}
+// type for loginCredentials in index.d.ts
 
 const Login = (props: Props) => {
   const [loginCredentials, setLoginCredentials] = useState<LoginCredentials>({
@@ -13,6 +9,19 @@ const Login = (props: Props) => {
     email: "",
     password: "",
   });
+
+  // following should better be done in a context
+  // user has to be typed but can also be null (after logout)
+  const [user, setUser] = useState<User | null>({
+    userName: "",
+    email: "",
+    avatar: "",
+  });
+
+  // error handling
+  // best the error starts as null so nothing is shown in the frontend
+  const [error, setError] = useState<ResponseError>(null);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     // setLoginCredentials to what it was before + add e.target.value
     // console.log("e.target.name :>> ", e.target.name);
@@ -52,32 +61,39 @@ const Login = (props: Props) => {
 
       // if response is positiv transform response to json
       if (response.ok) {
-        const result = await response.json();
+        // result is of type FetchLoginResult as defined in index.d.ts
+        const result: FetchLoginResult = await response.json();
+        // typing can also be written like:
+        // const result = (await response.json()) as FetchLoginResult;
         // in result.token is the token
         const { token, user, message } = result;
-        // store token in the local storage of the browser with localStorage.setItem + key(name "token")-value(token) pair
+        // store token in the local storage of the browser with
+        //   localStorage.setItem + key(name "token")-value(token) pair
         // local storage can be seen in the browser in developer tools  --> Application
         // as long as the token is stored in local storage the user is logged in
         //check if token is there
         if (token) {
           localStorage.setItem("token", token);
-        } else {
-          // no token
+          //  setUser after doing the type
+          setUser(result.user);
         }
 
         console.log("result :>> ", result);
+      }
+      if (!response.ok) {
+        // (response.status === 404) // if only 404 otherwise more status codes
+        const result: FetchErrror = await response.json();
+        setError(result.error);
+        //
       }
     } catch (error) {
       console.log("error during login :>> ", error);
     }
   };
 
-  useEffect(() => {
-    checkUserStatus();
-  }, []);
-
   const checkUserStatus = () => {
-    // method localStorage has few options, they can be chosen when putting the . - here we want to get the item named "token"
+    // method localStorage has few options, they can be chosen when putting the .
+    //- here we want to get the item named "token"
     const token = localStorage.getItem("token");
     // check if there is a token
     // this info should best be in context so all components know
@@ -88,9 +104,25 @@ const Login = (props: Props) => {
     }
   };
 
+  // function deletes the token from the local storage
+  const logout = () => {
+    localStorage.removeItem("token");
+    // after loggin out user should be set to null, therefore it can't just be of type string
+    setUser(null);
+  };
+
+  // everytime there is an interaction with the user, check the status
+  useEffect(() => {
+    checkUserStatus();
+  }, [user]);
+
   return (
     <div>
+      <div>
+        <button onClick={logout}>Logout</button>
+      </div>
       <h1>Login</h1>
+      {error && <h2>{error}</h2>}
       <div>
         <form onSubmit={submitLogin} className="inputfields">
           <label htmlFor="email">Email </label>

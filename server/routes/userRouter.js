@@ -1,5 +1,10 @@
 import express from "express";
-import { imageUpload, login, register } from "../controller/userController.js";
+import {
+  getProfile,
+  imageUpload,
+  login,
+  register,
+} from "../controller/userController.js";
 import multerUpload from "../middleware/multer.js";
 const router = express.Router();
 
@@ -14,6 +19,9 @@ router.post("/register", register);
 
 router.post("/login", login);
 // function in userController.js
+
+// route where user can see own information, function in userController.js
+router.get("/profile", getProfile);
 
 export default router;
 // in index.js import userRoutes

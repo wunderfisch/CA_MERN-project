@@ -1,16 +1,20 @@
 import express from "express";
 import cors from "cors";
+import * as dotenv from "dotenv";
+dotenv.config();
+import mongoose, { connect } from "mongoose";
+import passport from "passport";
+
+import cloudinaryConfig from "./config/cloudinary.js";
+import passportStrategy from "./config/passportConfig.js";
+
 import testRouter from "./routes/testRouter.js";
 import recipesRouter from "./routes/recipesRouter.js";
 import drinksRouter from "./routes/drinksRouter.js";
 import userRouter from "./routes/userRouter.js";
 // add .js manually
-import * as dotenv from "dotenv";
-dotenv.config();
 
-import mongoose, { connect } from "mongoose";
 import multerUpload from "./middleware/multer.js";
-import cloudinaryConfig from "./config/cloudinary.js";
 
 const app = express();
 
@@ -26,6 +30,7 @@ const addMiddelwares = () => {
   );
   app.use(cors());
   cloudinaryConfig();
+  passportStrategy(passport);
 };
 
 const startServer = () => {
