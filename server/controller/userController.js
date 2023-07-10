@@ -166,7 +166,21 @@ const login = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  console.log("is getProfile working?");
+  // console.log("is getProfile working?");
+  console.log("req :>> ", req);
+  // middleware is making the field user. without passport + specific strategy req.user is undefine because it doesn't exist
+  // console.log("req.user :>> ", req.user);
+  // send response back to client
+  if (req.user) {
+    res.status(200).json({
+      user: req.user,
+    });
+  } else {
+    res.status(404).json({
+      // if user gets deleted (not if token is wrong, in that case passport sends "unauthorized" )
+      error: "no such user existing in the database",
+    });
+  }
 };
 
 export { imageUpload, register, login, getProfile };

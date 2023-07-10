@@ -24,7 +24,7 @@ interface LoginCredentials {
 }
 
 // token could also be null, define later
-type Token = string;
+type Token = string | null;
 
 interface FetchLoginResult {
   message: string;
@@ -38,3 +38,7 @@ interface FetchErrror {
 }
 
 type ResponseError = string | null;
+
+interface FetchProfileResult {
+  user: User;
+}

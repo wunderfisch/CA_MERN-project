@@ -5,6 +5,7 @@ import {
   login,
   register,
 } from "../controller/userController.js";
+import jwtAuth from "../middleware/jwtAuth.js";
 import multerUpload from "../middleware/multer.js";
 const router = express.Router();
 
@@ -21,7 +22,8 @@ router.post("/login", login);
 // function in userController.js
 
 // route where user can see own information, function in userController.js
-router.get("/profile", getProfile);
+// middleware works like this: 1. request arrives at /profile, 2. middleware handles the request in jwtAuth.js, 3. request continues to getProfile function
+router.get("/profile", jwtAuth, getProfile);
 
 export default router;
 // in index.js import userRoutes

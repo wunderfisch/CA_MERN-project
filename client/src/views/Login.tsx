@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import getTokenFromLocalStorage from "../utils/getTokenFromLocalStorage";
 
 type Props = {};
 // type for loginCredentials in index.d.ts
@@ -91,18 +92,19 @@ const Login = (props: Props) => {
     }
   };
 
-  const checkUserStatus = () => {
-    // method localStorage has few options, they can be chosen when putting the .
-    //- here we want to get the item named "token"
-    const token = localStorage.getItem("token");
-    // check if there is a token
-    // this info should best be in context so all components know
-    if (token) {
-      console.log("user is logged in");
-    } else {
-      console.log("user is not logged in");
-    }
-  };
+  // function in utils/checkUserStatus.tsx now because DRY and needed also to display Profile
+  // const checkUserStatus = () => {
+  //   // method localStorage has few options, they can be chosen when putting the .
+  //   //- here we want to get the item named "token"
+  //   const token = localStorage.getItem("token");
+  //   // check if there is a token
+  //   // this info should best be in context so all components know
+  //   if (token) {
+  //     console.log("user is logged in");
+  //   } else {
+  //     console.log("user is not logged in");
+  //   }
+  // };
 
   // function deletes the token from the local storage
   const logout = () => {
@@ -113,7 +115,7 @@ const Login = (props: Props) => {
 
   // everytime there is an interaction with the user, check the status
   useEffect(() => {
-    checkUserStatus();
+    getTokenFromLocalStorage();
   }, [user]);
 
   return (
