@@ -55,7 +55,7 @@ const Register = (props: Props) => {
       body: formdata,
     };
 
-    // transform the fetch into a async
+    // image: transform the fetch into a async
     try {
       const response = await fetch(
         "http://localhost:5001/api/users/imageUpload",

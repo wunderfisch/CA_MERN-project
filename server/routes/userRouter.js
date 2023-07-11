@@ -11,7 +11,7 @@ const router = express.Router();
 
 // type of route is post, because we send info to backand
 // define endpoint
-// when reacing that endpoint trigger function (error when saving without having created)
+// when reaching that endpoint trigger function (error when saving without having created)
 router.post("/imageUpload", multerUpload.single("image"), imageUpload);
 // multerUpload.single only allows to upload one file at a time. in "" the name to where the image will travel
 

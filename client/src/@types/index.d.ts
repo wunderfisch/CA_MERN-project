@@ -42,3 +42,20 @@ type ResponseError = string | null;
 interface FetchProfileResult {
   user: User;
 }
+
+// for posting a recipe
+interface Recipe {
+  _id: string;
+  name: string;
+  likes: number;
+  description: string;
+  ingredients: Object;
+  category: string;
+  minutes: number;
+  vegan: boolean;
+  wellwith: Array;
+}
+
+interface FetchRecipeResult {
+  allRecipes: Recipe[];
+}

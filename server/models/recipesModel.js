@@ -20,7 +20,7 @@ const recipeSchema = new mongoose.Schema({
   },
   ingredients: {
     type: Array,
-    required: true,
+    required: false,
     unique: true,
   },
   category: {

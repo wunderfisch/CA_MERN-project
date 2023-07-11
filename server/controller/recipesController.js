@@ -98,5 +98,23 @@ const getRecipesByCategory = async (request, response) => {
   }
 };
 
+// function to post recipe
+const postRecipe = async (req, res) => {
+  console.log("req.body of post recipe :>> ", req.body);
+  // idealy check if description and ingredients are unique
+  const newRecipe = new recipesModel({
+    name: req.body.name,
+    likes: req.body.likes,
+    description: req.body.description,
+    ingredients: req.body.ingredients,
+    category: req.body.category,
+    minutes: req.body.minutes,
+    vegan: req.body.vegan,
+    wellwith: req.body.wellwith,
+  });
+  const savedRecipe = await newRecipe.save();
+  console.log("savedRecipe :>> ", savedRecipe);
+};
+
 // not export default because later more functions need to be exported from here
-export { getAllRecipes, getRecipesByCategory };
+export { getAllRecipes, getRecipesByCategory, postRecipe };

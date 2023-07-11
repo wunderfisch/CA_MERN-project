@@ -13,6 +13,7 @@ const getTokenFromLocalStorage = () => {
   } else {
     // if there is no token
     console.log("user is not logged in");
+
     return null;
   }
 };

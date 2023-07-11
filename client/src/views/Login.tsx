@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import getTokenFromLocalStorage from "../utils/getTokenFromLocalStorage";
 
 type Props = {};
@@ -116,6 +116,7 @@ const Login = (props: Props) => {
   // everytime there is an interaction with the user, check the status
   useEffect(() => {
     getTokenFromLocalStorage();
+    console.log("useffect run");
   }, [user]);
 
   return (

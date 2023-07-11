@@ -2,6 +2,7 @@ import express from "express";
 import {
   getAllRecipes,
   getRecipesByCategory,
+  postRecipe,
 } from "../controller/recipesController.js";
 import recipesModel from "../models/recipesModel.js";
 const router = express.Router();
@@ -27,5 +28,8 @@ router.get("/:category", getRecipesByCategory);
 //    console.log("allRecipes :>> ", allRecipes);
 //   //   console.log("response.data :>> ", response.data);
 // }
+
+//route for posting a recipe
+router.post("/postrecipe", postRecipe);
 
 export default router;
