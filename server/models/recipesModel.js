@@ -21,22 +21,15 @@ const recipeSchema = new mongoose.Schema({
   ingredients: {
     type: Array,
     required: false,
-    unique: true,
   },
   category: {
     type: String,
-    required: false,
-    unique: false,
   },
   minutes: {
     type: Number,
-    required: false,
-    unique: false,
   },
   vegan: {
     type: Boolean,
-    required: false,
-    unique: false,
   },
   // populate. documentation from mongoose requires. ref is the name of the collection which fields we want to display inside another
   // go to recipeContoller.js and add .populate({path: "wellwith"})

@@ -1,41 +1,67 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
-type Props = {};
-
-const PostRecipe = (props: Props) => {
-  console.log("asdadad");
+const PostRecipe = () => {
   const [newRecipe, setNewRecipe] = useState<Recipe>({
+    _id: "",
     name: "",
     likes: 0,
     description: "",
-    ingredients: {},
+    ingredients: [],
     category: "",
     minutes: 0,
     vegan: false,
     wellwith: [],
   });
 
+  const [ingredient, setIngredient] = useState<any>({
+    ingredientName: "",
+    amount: 0,
+    unit: "",
+  });
+  const [ingredientList, setIngredientList] = useState<Ingredient[]>([
+    { ingredientName: "", amount: 0, unit: "" },
+  ]);
+
+  const handleIngredientInput = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log("e.target.name :>> ", e.target.name);
+    // const property = (e.target as HTMLInputElement).name;
+    // const value = (e.target as HTMLInputElement).value;
+
+    setIngredient({ ...ingredient, [e.target.name]: e.target.value });
+    // console.log("ingredient :>> ", ingredient);
+  };
+
+  const handleIngredientListInput = () => {
+    setIngredientList([...ingredientList, ingredient]);
+    console.log("ingredientList :>> ", ingredientList);
+  };
+
   const handleInputChangeRecipe = (e: ChangeEvent<HTMLInputElement>) => {
     setNewRecipe({ ...newRecipe, [e.target.name]: e.target.value });
   };
 
   const uploadrecipe = async () => {
+    setNewRecipe({ ...newRecipe, ingredients: ingredientList });
     console.log("newRecipe :>> ", newRecipe);
 
     // postman code snippet
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
     // behaves as if all strings?!
     const urlencoded = new URLSearchParams();
     urlencoded.append("name", newRecipe.name);
     urlencoded.append("likes", newRecipe.likes);
     urlencoded.append("description", newRecipe.description);
-    urlencoded.append("ingredients", newRecipe.ingredients);
+    urlencoded.append("ingredients", ingredientList);
+
     urlencoded.append("category", newRecipe.category);
     urlencoded.append("minutes", newRecipe.minutes);
     urlencoded.append("vegan", newRecipe.vegan);
     urlencoded.append("wellwith", "648c7180c0b43a4a8fa0db77");
+    console.log(
+      'urlencoded.get("ingredients) :>> ',
+      urlencoded.get("ingredients")
+    );
 
     const requestOptions = {
       method: "POST",
@@ -77,15 +103,45 @@ const PostRecipe = (props: Props) => {
           id="description"
           onChange={handleInputChangeRecipe}
         />
-
-        {/* this should be an object with as many arrays(name, quanitiy, unit) as ingredients */}
-        <label htmlFor="ingredients">which ingredients are needed</label>
-        <input
-          type="text"
-          name="ingredients"
-          id="ingredients"
-          onChange={handleInputChangeRecipe}
-        />
+        <div>INGREDIENT: {ingredient.ingredientName}</div>
+        <div>
+          {" "}
+          {/* this should be an object with as many arrays(name, quanitiy, unit) as ingredients */}
+          <label htmlFor="ingredients">ingredient</label>
+          <input
+            type="text"
+            name="ingredients"
+            id="ingredients"
+            onChange={handleIngredientInput}
+          />{" "}
+          {""}
+          <label htmlFor="ingredientquantity">amount</label>
+          <input
+            type="number"
+            name="ingredientquantity"
+            id="ingredientquantity"
+            onChange={handleIngredientInput}
+          />{" "}
+          {""}
+          <label htmlFor="ingredientunit">unit</label>
+          <select
+            name="ingredientunit"
+            id="ingredientunit"
+            onChange={handleIngredientInput}
+          >
+            <option value="gramms">gramms</option>
+            <option value="bags">bags</option>
+            <option value="teaspoons">teaspoons</option>
+            <option value="tablespoons">tablespoons</option>
+            <option value="milliliters">milliliters</option>
+            <option value="items">items</option>
+            <option value="pinch">pinch</option>
+          </select>{" "}
+          {/* <button onClick={handleIngredientListInput}>Add to recipe</button> */}
+          <button onClick={handleIngredientListInput}>
+            Add to list of inggredients
+          </button>
+        </div>
 
         {/* does every radio need a own handler or one for all radios? */}
         <label htmlFor="fry">fry</label>

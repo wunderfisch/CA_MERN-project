@@ -1,3 +1,9 @@
+interface User {
+  userName: string;
+  email: string;
+  avatar: string;
+}
+
 interface RegisterCredentials {
   userName: string;
   email: string;
@@ -5,6 +11,9 @@ interface RegisterCredentials {
   avatar: string;
 }
 
+// interface RegisterCredentials extends User {
+//   password: string;
+// }
 interface FetchFileUpload {
   avatar: string;
 }
@@ -12,18 +21,11 @@ interface FetchFileUpload {
 // still to be done (as with types for login)
 interface FetchRegisterResult {}
 
-interface User {
-  userName: string;
-  email: string;
-  avatar: string;
-}
-
 interface LoginCredentials {
   email: string;
   password: string;
 }
 
-// token could also be null, define later
 type Token = string | null;
 
 interface FetchLoginResult {
@@ -49,7 +51,7 @@ interface Recipe {
   name: string;
   likes: number;
   description: string;
-  ingredients: Object;
+  ingredients: Ingredient[];
   category: string;
   minutes: number;
   vegan: boolean;
@@ -59,3 +61,10 @@ interface Recipe {
 interface FetchRecipeResult {
   allRecipes: Recipe[];
 }
+interface Ingredient {
+  ingredientName: string;
+  amount: number;
+  unit: string;
+}
+
+type IngredientList = Object | null;

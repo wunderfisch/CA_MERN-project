@@ -115,7 +115,7 @@ const Register = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className="textcenter">
       <h2>Register</h2>
       <div>
         {/* div for inputing the registration information to be send to userController */}

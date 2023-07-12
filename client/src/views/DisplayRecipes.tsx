@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Card from "../components/Card";
 
 type Props = {};
 
@@ -34,7 +35,7 @@ const DisplayRecipes = (props: Props) => {
       console.log("response :>> ", response);
       if (response.ok) {
         const result: FetchRecipeResult = await response.json();
-        // console.log("result :>> ", result);
+        console.log("result :>> ", result);
         setRecipes(result.allRecipes);
         setError(null);
       } else if (!response.ok && response.status === 401) {
@@ -55,14 +56,18 @@ const DisplayRecipes = (props: Props) => {
   return (
     <>
       <h2>DisplayRecipes</h2>
-      <div>
+      <div className="cardgrid">
         {error && <h3>{error}</h3>}
         {recipes &&
           recipes.map((recipe) => {
             return (
               <div key={recipe._id}>
-                {/* will only one name create an error since DB holds many items? */}
                 <p>{recipe.name}</p>
+                <Card
+                  recipe={recipe}
+
+                  // recipe={recipe}
+                />
               </div>
             );
           })}

@@ -69,22 +69,24 @@ const Profile = (props: Props) => {
 
   return (
     <>
-      <h1>User Profile</h1>
+      <div className="textcenter">
+        <h1>User Profile</h1>
 
-      {/* if there is an error, display it */}
-      {error && <h3>{error}</h3>}
-      {/* better rather with a use effect than with a button */}
-      <button onClick={getProfile}>Display my profile</button>
+        {/* if there is an error, display it */}
+        {error && <h3>{error}</h3>}
+        {/* better rather with a use effect than with a button */}
+        <button onClick={getProfile}>Display my profile</button>
 
-      {user && (
-        <div>
-          <p>{user.userName}</p>
-          <p>{user.email}</p>
-          <div className="avatar">
-            <img src={user.avatar} alt="your profile picture" />
+        {user && (
+          <div>
+            <p>{user.userName}</p>
+            <p>{user.email}</p>
+            <div className="avatar">
+              <img src={user.avatar} alt="your profile picture" />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };

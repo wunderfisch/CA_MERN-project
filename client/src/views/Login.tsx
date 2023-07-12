@@ -120,7 +120,7 @@ const Login = (props: Props) => {
   }, [user]);
 
   return (
-    <div>
+    <div className="textcenter">
       <div>
         <button onClick={logout}>Logout</button>
       </div>

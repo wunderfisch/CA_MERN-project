@@ -29,7 +29,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <h2>Recipes App</h2>
+      <h2 className="textcenter">Recipes App</h2>
       <Routes>
         <Route path="/" element={<DisplayRecipes />} />
         <Route path="/recipies/newRecipe" element={<PostRecipe />} />
