@@ -102,18 +102,33 @@ const getRecipesByCategory = async (request, response) => {
 const postRecipe = async (req, res) => {
   console.log("req.body of post recipe :>> ", req.body);
   // idealy check if description and ingredients are unique
+  const ingredientsList = JSON.parse(req.body.ingredients);
+  console.log("ingredientsList :>> ", ingredientsList);
   const newRecipe = new recipesModel({
     name: req.body.name,
     likes: req.body.likes,
     description: req.body.description,
-    ingredients: req.body.ingredients,
+    ingredients: ingredientsList,
     category: req.body.category,
     minutes: req.body.minutes,
     vegan: req.body.vegan,
     wellwith: req.body.wellwith,
   });
-  const savedRecipe = await newRecipe.save();
-  console.log("savedRecipe :>> ", savedRecipe);
+  console.log("newRecipe :>> ", newRecipe);
+
+  try {
+    const savedRecipe = await newRecipe.save();
+    console.log("savedRecipe :>> ", savedRecipe);
+    res.status(201).json({
+      message: "recipe upload successful",
+      savedRecipe,
+    });
+  } catch (error) {
+    console.log("error uploading recipe :>> ", error);
+    res.status(400).json({
+      message: "can't upload the recipe",
+    });
+  }
 };
 
 // not export default because later more functions need to be exported from here

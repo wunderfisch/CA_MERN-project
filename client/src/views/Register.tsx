@@ -1,4 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import { RegisterCredentials } from "../@types";
 
 type Props = {};
 // interface User moved to index.d.ts

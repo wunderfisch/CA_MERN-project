@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import {
+  FetchErrror,
+  FetchProfileResult,
+  ResponseError,
+  User,
+} from "../@types";
 import getTokenFromLocalStorage from "../utils/getTokenFromLocalStorage";
 
 type Props = {};

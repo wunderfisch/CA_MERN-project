@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
+import {
+  FetchErrror,
+  FetchRecipeResult,
+  Recipe,
+  ResponseError,
+} from "../@types";
 import Card from "../components/Card";
 
 type Props = {};
 
 const DisplayRecipes = (props: Props) => {
-  console.log("asdsad");
   const [recipes, setRecipes] = useState<Recipe[]>([
     {
       _id: "",
       name: "",
       likes: 0,
       description: "",
-      ingredients: {},
+      ingredients: [],
       category: "",
       minutes: 0,
       vegan: false,
@@ -32,10 +37,10 @@ const DisplayRecipes = (props: Props) => {
         "http://localhost:5001/api/recipes/all",
         requestOptions
       );
-      console.log("response :>> ", response);
+      // console.log("response :>> ", response);
       if (response.ok) {
         const result: FetchRecipeResult = await response.json();
-        console.log("result :>> ", result);
+        // console.log("result :>> ", result);
         setRecipes(result.allRecipes);
         setError(null);
       } else if (!response.ok && response.status === 401) {
@@ -62,12 +67,7 @@ const DisplayRecipes = (props: Props) => {
           recipes.map((recipe) => {
             return (
               <div key={recipe._id}>
-                <p>{recipe.name}</p>
-                <Card
-                  recipe={recipe}
-
-                  // recipe={recipe}
-                />
+                <Card recipe={recipe} />
               </div>
             );
           })}

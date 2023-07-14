@@ -1,10 +1,10 @@
-interface User {
+export interface User {
   userName: string;
   email: string;
   avatar: string;
 }
 
-interface RegisterCredentials {
+export interface RegisterCredentials {
   userName: string;
   email: string;
   password: string;
@@ -14,39 +14,39 @@ interface RegisterCredentials {
 // interface RegisterCredentials extends User {
 //   password: string;
 // }
-interface FetchFileUpload {
+export interface FetchFileUpload {
   avatar: string;
 }
 
 // still to be done (as with types for login)
-interface FetchRegisterResult {}
+export interface FetchRegisterResult {}
 
-interface LoginCredentials {
+export interface LoginCredentials {
   email: string;
   password: string;
 }
 
-type Token = string | null;
+export type Token = string | null;
 
-interface FetchLoginResult {
+export interface FetchLoginResult {
   message: string;
   user: User;
   token: Token;
 }
 
 // a result that is an error needs different type than a corrrect result
-interface FetchErrror {
+export interface FetchErrror {
   error: string;
 }
 
-type ResponseError = string | null;
+export type ResponseError = string | null;
 
-interface FetchProfileResult {
+export interface FetchProfileResult {
   user: User;
 }
 
 // for posting a recipe
-interface Recipe {
+export interface Recipe {
   _id: string;
   name: string;
   likes: number;
@@ -58,13 +58,13 @@ interface Recipe {
   wellwith: Array;
 }
 
-interface FetchRecipeResult {
+export interface FetchRecipeResult {
   allRecipes: Recipe[];
 }
-interface Ingredient {
+export interface Ingredient {
   ingredientName: string;
   amount: number;
   unit: string;
 }
 
-type IngredientList = Object | null;
+export type IngredientList = Object | null;

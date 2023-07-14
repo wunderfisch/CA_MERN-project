@@ -1,4 +1,11 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {
+  FetchErrror,
+  FetchLoginResult,
+  LoginCredentials,
+  ResponseError,
+  User,
+} from "../@types";
 import getTokenFromLocalStorage from "../utils/getTokenFromLocalStorage";
 
 type Props = {};

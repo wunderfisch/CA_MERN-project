@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 
 // create schema
 
+// const ingredient = new mongoose.Schema({
+//   ingredient: {
+//     ingredientName: String,
+//     amount: Number,
+//     unit: String,
+//   },
+// });
+
 const recipeSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -16,17 +24,21 @@ const recipeSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-    unique: true,
+    // unique: true,
   },
   ingredients: {
     type: Array,
-    required: false,
+    required: true,
   },
+  // ingredients: { value: [ingredient], required: true },
+
   category: {
     type: String,
+    required: true,
   },
   minutes: {
     type: Number,
+    required: true,
   },
   vegan: {
     type: Boolean,

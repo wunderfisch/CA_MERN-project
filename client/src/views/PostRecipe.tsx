@@ -1,6 +1,18 @@
 import { ChangeEvent, useState } from "react";
+import { Ingredient, Recipe } from "../@types";
 
 const PostRecipe = () => {
+  // const [newRecipe, setNewRecipe] = useState<Recipe>({
+  //   _id: "",
+  //   name: "",
+  //   likes: 0,
+  //   description: "",
+  //   ingredients: [],
+  //   category: "",
+  //   minutes: 0,
+  //   vegan: false,
+  //   wellwith: [],
+  // });
   const [newRecipe, setNewRecipe] = useState<Recipe>({
     _id: "",
     name: "",
@@ -13,20 +25,24 @@ const PostRecipe = () => {
     wellwith: [],
   });
 
-  const [ingredient, setIngredient] = useState<any>({
-    ingredientName: "",
-    amount: 0,
-    unit: "",
-  });
-  const [ingredientList, setIngredientList] = useState<Ingredient[]>([
-    { ingredientName: "", amount: 0, unit: "" },
-  ]);
+  // const [ingredient, setIngredient] = useState<any>({
+  //   ingredientName: "",
+  //   amount: 0,
+  //   unit: "",
+  // });
+  const [ingredient, setIngredient] = useState<any>({});
+  const [ingredientList, setIngredientList] = useState<
+    Ingredient[]
+    // | null
+  >(
+    // null
+    [{ ingredientName: "", amount: 0, unit: "" }]
+  );
 
   const handleIngredientInput = (e: ChangeEvent<HTMLInputElement>) => {
     console.log("e.target.name :>> ", e.target.name);
     // const property = (e.target as HTMLInputElement).name;
     // const value = (e.target as HTMLInputElement).value;
-
     setIngredient({ ...ingredient, [e.target.name]: e.target.value });
     // console.log("ingredient :>> ", ingredient);
   };
@@ -44,6 +60,10 @@ const PostRecipe = () => {
     setNewRecipe({ ...newRecipe, ingredients: ingredientList });
     console.log("newRecipe :>> ", newRecipe);
 
+    // first stringify the array
+    const ingredientsListToApped = JSON.stringify(ingredientList);
+    console.log("ingredientsListToApped :>> ", ingredientsListToApped);
+
     // postman code snippet
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -52,11 +72,13 @@ const PostRecipe = () => {
     urlencoded.append("name", newRecipe.name);
     urlencoded.append("likes", newRecipe.likes);
     urlencoded.append("description", newRecipe.description);
-    urlencoded.append("ingredients", ingredientList);
 
+    // array can't be appended, has to be converted to a string before sent to backend
+    urlencoded.append("ingredients", ingredientsListToApped);
     urlencoded.append("category", newRecipe.category);
     urlencoded.append("minutes", newRecipe.minutes);
     urlencoded.append("vegan", newRecipe.vegan);
+    // set hard coded for now - later possibilty to pick drinks (populate)
     urlencoded.append("wellwith", "648c7180c0b43a4a8fa0db77");
     console.log(
       'urlencoded.get("ingredients) :>> ',
@@ -103,32 +125,42 @@ const PostRecipe = () => {
           id="description"
           onChange={handleInputChangeRecipe}
         />
-        <div>INGREDIENT: {ingredient.ingredientName}</div>
+        <div>
+          Ingredients:
+          {/* {ingredientList &&
+            ingredientList.map((ingredient) => {
+              return (
+                <div key={ingredient._id}>
+                  <p>{ingredient}</p>
+                </div>
+              );
+            })} */}
+        </div>
         <div>
           {" "}
           {/* this should be an object with as many arrays(name, quanitiy, unit) as ingredients */}
-          <label htmlFor="ingredients">ingredient</label>
+          <label htmlFor="ingredientName">ingredient</label>{" "}
           <input
             type="text"
-            name="ingredients"
-            id="ingredients"
+            name="ingredientName"
+            id="ingredientName"
             onChange={handleIngredientInput}
           />{" "}
           {""}
-          <label htmlFor="ingredientquantity">amount</label>
+          <label htmlFor="amount">amount</label>{" "}
           <input
             type="number"
-            name="ingredientquantity"
-            id="ingredientquantity"
+            name="amount"
+            id="amount"
             onChange={handleIngredientInput}
           />{" "}
           {""}
-          <label htmlFor="ingredientunit">unit</label>
-          <select
-            name="ingredientunit"
-            id="ingredientunit"
-            onChange={handleIngredientInput}
-          >
+          <label htmlFor="unit">unit</label>{" "}
+          <select name="unit" id="unit" onChange={handleIngredientInput}>
+            <option selected disabled>
+              {" "}
+              pick one
+            </option>
             <option value="gramms">gramms</option>
             <option value="bags">bags</option>
             <option value="teaspoons">teaspoons</option>
@@ -144,64 +176,65 @@ const PostRecipe = () => {
         </div>
 
         {/* does every radio need a own handler or one for all radios? */}
-        <label htmlFor="fry">fry</label>
-        <input
-          type="radio"
-          name="category"
-          id="fry"
-          value="fry"
-          onChange={handleInputChangeRecipe}
-        />
-        <br></br>
-
-        <label htmlFor="bake">bake</label>
-        <input
-          type="radio"
-          name="category"
-          id="bake"
-          value="bake"
-          onChange={handleInputChangeRecipe}
-        />
-        <br></br>
-
-        <label htmlFor="cook">cook</label>
-        <input
-          type="radio"
-          name="category"
-          id="cook"
-          value="cook"
-          onChange={handleInputChangeRecipe}
-        />
-        <br></br>
-
-        <label htmlFor="cold">cold</label>
-        <input
-          type="radio"
-          name="category"
-          id="cold"
-          value="cold"
-          onChange={handleInputChangeRecipe}
-        />
-        <br></br>
-
-        <label htmlFor="minutes">Minutes</label>
-        <input
-          type="number"
-          name="minutes"
-          id="minutes"
-          min="1"
-          max="1440"
-          onChange={handleInputChangeRecipe}
-        />
-
-        <label htmlFor="vegan">Is your recipe vegan?</label>
-        <input
-          type="checkbox"
-          name="vegan"
-          id="vegan"
-          value="true"
-          onChange={handleInputChangeRecipe}
-        />
+        <div>
+          {" "}
+          <label htmlFor="fry">fry</label>
+          <input
+            type="radio"
+            name="category"
+            id="fry"
+            value="fry"
+            onChange={handleInputChangeRecipe}
+          />
+          <br></br>
+          <label htmlFor="bake">bake</label>
+          <input
+            type="radio"
+            name="category"
+            id="bake"
+            value="bake"
+            onChange={handleInputChangeRecipe}
+          />
+          <br></br>
+          <label htmlFor="cook">cook</label>
+          <input
+            type="radio"
+            name="category"
+            id="cook"
+            value="cook"
+            onChange={handleInputChangeRecipe}
+          />
+          <br></br>
+          <label htmlFor="cold">cold</label>
+          <input
+            type="radio"
+            name="category"
+            id="cold"
+            value="cold"
+            onChange={handleInputChangeRecipe}
+          />
+        </div>
+        <div>
+          <label htmlFor="minutes">Minutes</label>{" "}
+          <input
+            type="number"
+            name="minutes"
+            id="minutes"
+            min="1"
+            max="1440"
+            onChange={handleInputChangeRecipe}
+          />
+        </div>
+        <div>
+          <label htmlFor="vegan">Is your recipe vegan?</label>{" "}
+          <input
+            type="checkbox"
+            name="vegan"
+            id="vegan"
+            value="true"
+            onChange={handleInputChangeRecipe}
+          />
+        </div>
 
         {/* <p>Which drink fits to your recipe?</p>
         <label for="orangejuice">orange juice</label>

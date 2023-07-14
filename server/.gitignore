@@ -3,3 +3,5 @@ node_modules/
 .env
 
 ingredients.json
+
+todo.txt
