@@ -12,7 +12,8 @@ const PostRecipe = () => {
   //   minutes: 0,
   //   vegan: false,
   //   wellwith: [],
-  // });
+  // });name]: e.target.value });
+  // console.log("ingredient :>>
   const [newRecipe, setNewRecipe] = useState<Recipe>({
     _id: "",
     name: "",
@@ -31,24 +32,43 @@ const PostRecipe = () => {
   //   unit: "",
   // });
   const [ingredient, setIngredient] = useState<any>({});
-  const [ingredientList, setIngredientList] = useState<
-    Ingredient[]
-    // | null
-  >(
-    // null
-    [{ ingredientName: "", amount: 0, unit: "" }]
+  // const [ingredientList, setIngredientList] = useState<
+  //   Ingredient[]
+  //   // | null
+  // >(
+  //   // null
+  //   [{ ingredientName: "", amount: 0, unit: "" }]
+  // );
+
+  // const [ingredientList, setIngredientList] = useState<
+  //   Ingredient[]
+  //   // | null
+  // >(
+  //   // null
+  //   []
+  // );
+
+  const [ingredientList, setIngredientList] = useState<Ingredient[] | null>(
+    null
   );
 
-  const handleIngredientInput = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("e.target.name :>> ", e.target.name);
+  const handleIngredientInput = (
+    e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
+    console.log("e.target.name :>> ", e);
     // const property = (e.target as HTMLInputElement).name;
     // const value = (e.target as HTMLInputElement).value;
     setIngredient({ ...ingredient, [e.target.name]: e.target.value });
     // console.log("ingredient :>> ", ingredient);
   };
 
-  const handleIngredientListInput = () => {
-    setIngredientList([...ingredientList, ingredient]);
+  const handleIngredientListInput = (e: MouseEvent) => {
+    const selectValue = document.querySelector("select")?.value;
+    console.log("selectArray :>> ", selectValue);
+    if (selectValue === "no-value") {
+      alert("pick one");
+    }
+    setIngredientList([...(ingredientList || []), ingredient]);
     console.log("ingredientList :>> ", ingredientList);
   };
 
@@ -57,12 +77,13 @@ const PostRecipe = () => {
   };
 
   const uploadrecipe = async () => {
-    setNewRecipe({ ...newRecipe, ingredients: ingredientList });
+    // setNewRecipe({ ...newRecipe, ingredients: ingredientList });
     console.log("newRecipe :>> ", newRecipe);
 
     // first stringify the array
     const ingredientsListToApped = JSON.stringify(ingredientList);
-    console.log("ingredientsListToApped :>> ", ingredientsListToApped);
+    // console.log("ingredientsListToApped :>> ", ingredientsListToApped);
+    console.log("ingredientList :>> ", ingredientList);
 
     // postman code snippet
     const myHeaders = new Headers();
@@ -70,14 +91,14 @@ const PostRecipe = () => {
     // behaves as if all strings?!
     const urlencoded = new URLSearchParams();
     urlencoded.append("name", newRecipe.name);
-    urlencoded.append("likes", newRecipe.likes);
+    urlencoded.append("likes", JSON.stringify(newRecipe.likes));
     urlencoded.append("description", newRecipe.description);
 
     // array can't be appended, has to be converted to a string before sent to backend
     urlencoded.append("ingredients", ingredientsListToApped);
     urlencoded.append("category", newRecipe.category);
-    urlencoded.append("minutes", newRecipe.minutes);
-    urlencoded.append("vegan", newRecipe.vegan);
+    urlencoded.append("minutes", JSON.stringify(newRecipe.minutes));
+    urlencoded.append("vegan", JSON.stringify(newRecipe.vegan));
     // set hard coded for now - later possibilty to pick drinks (populate)
     urlencoded.append("wellwith", "648c7180c0b43a4a8fa0db77");
     console.log(
@@ -126,15 +147,22 @@ const PostRecipe = () => {
           onChange={handleInputChangeRecipe}
         />
         <div>
+          {/* display already posted ingredients here */}
           Ingredients:
-          {/* {ingredientList &&
-            ingredientList.map((ingredient) => {
-              return (
-                <div key={ingredient._id}>
-                  <p>{ingredient}</p>
-                </div>
-              );
-            })} */}
+          <div>
+            {ingredientList &&
+              ingredientList.map((ingredient, index) => {
+                return (
+                  <div key={index} className="displayaddedingredient">
+                    <div className="ingredientitem">
+                      {ingredient.ingredientName}{" "}
+                    </div>
+                    <div className="ingredientitem">{ingredient.amount} </div>
+                    <div className="ingredientitem">{ingredient.unit}</div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
         <div>
           {" "}
@@ -156,8 +184,13 @@ const PostRecipe = () => {
           />{" "}
           {""}
           <label htmlFor="unit">unit</label>{" "}
-          <select name="unit" id="unit" onChange={handleIngredientInput}>
-            <option selected disabled>
+          <select
+            name="unit"
+            id="unit"
+            onChange={handleIngredientInput}
+            defaultValue={"no-value"}
+          >
+            <option value="no-value" disabled selected>
               {" "}
               pick one
             </option>
@@ -170,13 +203,17 @@ const PostRecipe = () => {
             <option value="pinch">pinch</option>
           </select>{" "}
           {/* <button onClick={handleIngredientListInput}>Add to recipe</button> */}
-          <button onClick={handleIngredientListInput}>
-            Add to list of inggredients
+          <button
+            onClick={handleIngredientListInput}
+            //  value="Reset form"
+          >
+            Add to list of ingredients
           </button>
         </div>
 
-        {/* does every radio need a own handler or one for all radios? */}
-        <div>
+        {/* radio group detected by name*/}
+
+        <form>
           {" "}
           <label htmlFor="fry">fry</label>
           <input
@@ -213,7 +250,7 @@ const PostRecipe = () => {
             value="cold"
             onChange={handleInputChangeRecipe}
           />
-        </div>
+        </form>
         <div>
           <label htmlFor="minutes">Minutes</label>{" "}
           <input
@@ -232,7 +269,7 @@ const PostRecipe = () => {
             name="vegan"
             id="vegan"
             value="true"
-            onChange={handleInputChangeRecipe}
+            onChange={(e) => handleInputChangeRecipe(e)}
           />
         </div>
 

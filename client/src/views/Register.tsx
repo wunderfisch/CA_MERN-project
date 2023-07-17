@@ -155,6 +155,7 @@ const Register = (props: Props) => {
           <button type="submit">upload picture</button>
         </form>
       </div>
+
       <div>Your Information</div>
       {/* if there is a newUser, display what is written in newUser.avatar */}
       {newUser && (

@@ -30,6 +30,16 @@
   padding: 2em;
 }
 
+.displayaddedingredient {
+  display: flex;
+  border: 1px solid gold;
+  padding: 0.5em 2em;
+}
+
+.ingredientitem {
+  padding-right: 1em;
+}
+
 .cardgrid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

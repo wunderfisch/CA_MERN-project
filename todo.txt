@@ -1,8 +1,9 @@
 Todo: 
 
-- types exportieren
-- show ingredients
-- make details page for every recipe and in cards only show short version
+- delete [0] ingredients
+- radio input onChange ok like this?
+- clear ingredient inputs after adding
+- make details page for every recipe and in cards only show short version OR acordeon for description/ingredients if more than 3 lines
 - licence naming of pictures (profile (recipes))
 - pictures for recipes
 - regex or other check of inputs in Frontend/ Register.tsx and/or backend userController.js
@@ -16,3 +17,6 @@ Todo:
 - drinks
 - connecting the populate drinks-recipes
 - nav on hover
+- empty input fields after adding ingredient
+- possibilty to sort recipes (cook, fry, bake, cold & <15min, ...)
+- likes
